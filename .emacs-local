@@ -1,0 +1,18 @@
+(setq default-frame-alist
+      '((top . 0) (left . 50)
+	(width . 82) (height . 47)
+	(cursor-color . "yellow")
+	))
+
+(setq load-path
+      (nconc '( "~/site-lisp/testsuite")
+      	     '( "~/site-lisp/autotest.el")
+             '( "~/site-lisp")
+             load-path))
+
+;; (setq have-python t)
+;; (setq have-backup-dir t)
+(setq have-markdown t)
+(setq have-rubyblock t)
+(setq have-browse-kill-ring t)
+;;(setq have-autotest t)
