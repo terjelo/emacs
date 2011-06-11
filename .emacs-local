@@ -15,4 +15,5 @@
 (setq have-markdown t)
 (setq have-rubyblock t)
 (setq have-browse-kill-ring t)
+(setq have-psvn 't)
 ;;(setq have-autotest t)
