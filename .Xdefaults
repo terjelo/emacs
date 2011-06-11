@@ -1,0 +1,55 @@
+! Parts (C) 1996 By Greg J. Badros <gjb@cs.duke.edu>
+! You may use this file as specified under the GNU General Public License
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! emacs, xemacs
+
+emacs*Background: MidnightBlue
+emacs*Foreground: White
+emacs*pointerColor: Orchid
+emacs*cursorColor: Yellow
+emacs*bitmapIcon: on
+emacs*font: -*-fixed-*-*-*-*-10-*-*-*-*-*-*-*
+emacs.geometry: 85x60+20+20
+!emacs*font:-b&h-lucidatypewriter-medium-r-normal-sans-10-*-*-*-*-*-iso8859-1
+!emacs*Background: DarkSlateGray
+!emacs*Foreground: Wheat
+!emacs*pointerColor: Orchid
+!emacs*cursorColor: Orchid
+!emacs*bitmapIcon: on
+!emacs.geometry: 80x25
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! xterm (and friends)
+
+XTerm*highlightSelection:  true
+! Uncomment this to use color for the bold attribute
+XTerm*VT100*colorBDMode:  on
+XTerm*VT100*colorBD:  blue
+! Uncomment this to use color for underline attribute
+XTerm.VT100*colorULMode:  on
+XTerm.VT100*underLine:  off
+XTerm*VT100*colorUL:  magenta
+! Uncomment this to display the scrollbar 
+XTerm*scrollBar:  true
+
+! This resource specifies whether or not to ignore the 'alternate screen'
+! of applications such as vi.  When it is on, these applications will restore
+! the contents of the screen when they are exited to what they were before
+! they were started.  When it is off, the contents of vi will remain on the
+! screen after the program is quit.
+XTerm.VT100.titeInhibit:  true
+
+! Uncomment this to turn off color mode in your xterms
+!XTerm.VT100*colorMode:  off
+XTerm.VT100*dynamicColors:  on
+
+! Number of lines of scrollback to save
+XTerm*saveLines:	1500
+
+xterm*reverseWrap:	true
+
+*visualBell:		true
+*scrollTtyOutput:	False
+*scrollKey:		True
+Scrollbar.JumpCursor:	True
