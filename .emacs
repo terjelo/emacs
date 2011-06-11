@@ -192,7 +192,7 @@
 		  (push '(top . top-step) default-frame-alist)))))
 
 
-(when emacs21 
+(when (or emacs21 emacs22 emacs23)
     (blink-cursor-mode -1) 
     (tool-bar-mode -1) 
     (tooltip-mode -1))

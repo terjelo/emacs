@@ -3,4 +3,6 @@ Emacs config.
 Usage:
 * Checkout: git clone git@github.com:terjelo/emacs.git
 * Link .emacs to home directory
-* Copy .emacs-local, edit to reflect locally installed packages.
+* Link .Xdefaults to home directory.
+* Copy or link .emacs-local, edit to reflect locally installed packages.
+
