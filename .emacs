@@ -566,11 +566,18 @@
       (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
       (autoload 'javascript-mode "javascript" nil t)))
 
+;; Emacs 23 specifics go here for now.
 (when emacs23
   (if have-rubyblock
       (progn
 	(require 'ruby-block)
-	(ruby-block-mode t))))
+	(ruby-block-mode t)))
+  
+  ;; Working javascript mode - enable it.
+  (setq auto-mode-alist (cons '("\\.js$" . js-mode) auto-mode-alist))
+  
+  ;; for xml files, use nxml-mode instead of sgml-mode
+  (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
 
 (if have-browse-kill-ring
     (progn
