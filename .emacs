@@ -38,9 +38,12 @@
 (defvar have-rubyblock nil "Set to non-nil if you have ruby-block mode")
 (defvar have-browse-kill-ring nil "Set to non-nil if you have browse-kill-ring mode")
 (defvar have-colortheme nil "Set to non-nil if you have colortheme mode")
+(defvar have-psvn nil "Set to non-nil if you have psvn")
+
 
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
+(setq emacs23 (eq emacs-major-version 23)) 
 ;;; General look and feel
 ;;;
 
@@ -110,7 +113,8 @@
 (global-set-key "\C-x\C-n" 'find-file-other-frame) ;open new frame with a file
 (global-set-key "\M-u" 'void) ;don't bind upcase word
 (global-set-key "\M-l" 'void) ;don't bind downcase word
-(global-set-key "\M-g" 'grep) ;Useful...
+;(global-set-key "\M-g" 'grep) ;Useful...
+(global-set-key "\M-g" 'grep-find) ;Useful...
 (global-set-key "\M-c" 'cvs-examine) ;Very useful...
 ;(global-set-key [(control =)] 'joc-bounce-sexp) ; Bounce between parens
 (global-set-key [(control =)] 'align-equals) ; Align selection on equal sign.
@@ -188,9 +192,10 @@
 		  (push '(top . top-step) default-frame-alist)))))
 
 
-(blink-cursor-mode -1) 
-(tool-bar-mode -1) 
-(tooltip-mode -1)
+(when emacs21 
+    (blink-cursor-mode -1) 
+    (tool-bar-mode -1) 
+    (tooltip-mode -1))
 
 (load "comint")
 (fset 'original-comint-exec-1 (symbol-function 'comint-exec-1))
@@ -308,8 +313,7 @@
 (set-face-foreground 'font-lock-fixme-face "Red")
 (set-face-background 'font-lock-fixme-face "Yellow")
 (font-lock-add-keywords 'c++-mode
-			'(("\\(XXX.*\\|TODO.*\\)" 1 font-lock-fixme-face prepend)))
-
+			'(("\\(XXX.*\\|TODO.*\\|\@todo.*\\)" 1 font-lock-fixme-face prepend)))
 
 ;;; align equal signs in marked block
 (defun align-equals (start end)
@@ -454,6 +458,12 @@
 ;; 	      ("^/[^/:]+:"     "./")        ; search-upward... its very slow
 	      (t               "~/.backups/" ok-create prepend-name)))))
 
+;; Save backup files to temp dir.
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
 ;; TeX stuff.
 ;;
 ;; AUC TeX.
@@ -544,15 +554,21 @@
 		'(lambda ()
 		   (define-key ruby-mode-map (kbd "C-c C-a") 'autotest-switch)))))
 
-(if have-rubyblock
-    (progn
-      (require 'ruby-block)
-      (ruby-block-mode t)))
+(when emacs23
+  (if have-rubyblock
+      (progn
+	(require 'ruby-block)
+	(ruby-block-mode t))))
 
 (if have-browse-kill-ring
     (progn
       (require 'browse-kill-ring)
       (browse-kill-ring-default-keybindings)))
+
+;psvn - subversion explorer
+(if have-psvn
+    (progn
+      (require 'psvn)))
 
 
 

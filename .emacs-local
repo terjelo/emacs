@@ -8,6 +8,7 @@
       (nconc '( "~/emacs/site-lisp/testsuite")
       	     '( "~/emacs/site-lisp/autotest.el")
              '( "~/emacs/site-lisp")
+             '( "~/emacs/site-lisp/ri-emacs-0.2.3")
              load-path))
 
 ;; (setq have-python t)
