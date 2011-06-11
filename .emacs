@@ -37,6 +37,7 @@
 (defvar have-autotest nil "Set to non-nil if you have Autotest mode")
 (defvar have-rubyblock nil "Set to non-nil if you have ruby-block mode")
 (defvar have-browse-kill-ring nil "Set to non-nil if you have browse-kill-ring mode")
+(defvar have-colortheme nil "Set to non-nil if you have colortheme mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
@@ -72,7 +73,7 @@
 (require 'iswitchb)                  ;; Easy switching to buffers
 (iswitchb-default-keybindings)
 (menu-bar-mode -1)                   ;; Ditch the menu.
-(tabbar-mode -1)                     ;; Ditch the tabbar
+;(tabbar-mode -1)                     ;; Ditch the tabbar
 (scroll-bar-mode nil)                ;; Ditch the scrollbar.
 (setq default-major-mode 'text-mode) ;; Open unidentified files in text mode
 
@@ -116,9 +117,6 @@
 (global-set-key [\C-tab] 'align) ; Align selection.
 
 (custom-set-variables '(aquamacs-styles-mode t))
-
-(color-theme-initialize)
-(color-theme-charcoal-black)
 
 ;;;---------------------------------------------------------------------
 
@@ -432,6 +430,12 @@
 	"Pops up a shell-buffer and insert a \"cd <file-dir>\" command." t)
       (global-set-key [f5] 'shell-toggle-cd)
       (global-set-key [C-f5] 'shell-toggle)))
+
+(if have-colortheme
+    (progn
+      (color-theme-initialize)
+      (color-theme-charcoal-black)))
+
 
 ; camelCase for thoseAnnoyingMixedCaseWords
 (if have-camelcase

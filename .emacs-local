@@ -5,9 +5,9 @@
 	))
 
 (setq load-path
-      (nconc '( "~/site-lisp/testsuite")
-      	     '( "~/site-lisp/autotest.el")
-             '( "~/site-lisp")
+      (nconc '( "~/emacs/site-lisp/testsuite")
+      	     '( "~/emacs/site-lisp/autotest.el")
+             '( "~/emacs/site-lisp")
              load-path))
 
 ;; (setq have-python t)
