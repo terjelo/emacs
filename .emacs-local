@@ -17,4 +17,7 @@
 (setq have-rubyblock t)
 (setq have-browse-kill-ring t)
 (setq have-psvn 't)
+(when (or emacs21 emacs22)
+    (setq have-javascript 't))
+
 ;;(setq have-autotest t)

@@ -39,7 +39,8 @@
 (defvar have-browse-kill-ring nil "Set to non-nil if you have browse-kill-ring mode")
 (defvar have-colortheme nil "Set to non-nil if you have colortheme mode")
 (defvar have-psvn nil "Set to non-nil if you have psvn")
-
+(defvar have-espresso nil "Set to non-nil if you have (and need) espresso mode for javascript")
+(defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
 
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
@@ -553,6 +554,17 @@
       (add-hook 'ruby-mode-hook
 		'(lambda ()
 		   (define-key ruby-mode-map (kbd "C-c C-a") 'autotest-switch)))))
+
+(if have-espresso
+    (progn
+      (autoload #'espresso-mode "espresso" "Start espresso mode" t)
+      (add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
+      (add-to-list 'auto-mode-alist '("\\.json$" . espresso-mode))))
+
+(if have-javascript
+    (progn
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
+      (autoload 'javascript-mode "javascript" nil t)))
 
 (when emacs23
   (if have-rubyblock
