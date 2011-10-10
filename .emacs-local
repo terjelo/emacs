@@ -9,7 +9,7 @@
       	     '( "~/emacs/site-lisp/autotest.el")
              '( "~/emacs/site-lisp")
              '( "~/emacs/site-lisp/ri-emacs-0.2.3")
-             '( "~/emacs/site-lisp/coffee-mode")
+             '( "~/emacs/site-lisp/coffee-mode.el")
              load-path))
 
 ;; (setq have-python t)
