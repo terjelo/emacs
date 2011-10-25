@@ -569,9 +569,10 @@
 
 (if have-coffeecript
     (progn
-      (require 'coffee-mode)
-      (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-      (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))))
+      (when (or emacs22 emacs23)
+	(require 'coffee-mode)
+	(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+	(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode)))))
 
 ;; Emacs 23 specifics go here for now.
 (when emacs23
