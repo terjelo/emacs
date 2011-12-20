@@ -195,7 +195,8 @@
 (when (or emacs21 emacs22 emacs23)
     (blink-cursor-mode -1) 
     (tool-bar-mode -1) 
-    (tooltip-mode -1))
+    (tooltip-mode -1)
+    (tabbar-mode -1))
 
 (load "comint")
 (fset 'original-comint-exec-1 (symbol-function 'comint-exec-1))
