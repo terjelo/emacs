@@ -9,6 +9,7 @@
       	     '( "~/emacs/site-lisp/autotest.el")
              '( "~/emacs/site-lisp")
              '( "~/emacs/site-lisp/ri-emacs-0.2.3")
+             '( "~/emacs/site-lisp/coffee-mode.el")
              load-path))
 
 ;; (setq have-python t)
@@ -17,4 +18,8 @@
 (setq have-rubyblock t)
 (setq have-browse-kill-ring t)
 (setq have-psvn 't)
+(setq have-coffeecript 't)
+(when (or emacs21 emacs22)
+    (setq have-javascript 't))
+
 ;;(setq have-autotest t)

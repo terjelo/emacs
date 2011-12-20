@@ -39,7 +39,9 @@
 (defvar have-browse-kill-ring nil "Set to non-nil if you have browse-kill-ring mode")
 (defvar have-colortheme nil "Set to non-nil if you have colortheme mode")
 (defvar have-psvn nil "Set to non-nil if you have psvn")
-
+(defvar have-espresso nil "Set to non-nil if you have (and need) espresso mode for javascript")
+(defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
+(defvar have-coffeecript nil "Set to non-nil if you have coffescript mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
@@ -555,11 +557,36 @@
 		'(lambda ()
 		   (define-key ruby-mode-map (kbd "C-c C-a") 'autotest-switch)))))
 
+(if have-espresso
+    (progn
+      (autoload #'espresso-mode "espresso" "Start espresso mode" t)
+      (add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
+      (add-to-list 'auto-mode-alist '("\\.json$" . espresso-mode))))
+
+(if have-javascript
+    (progn
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
+      (autoload 'javascript-mode "javascript" nil t)))
+
+(if have-coffeecript
+    (progn
+      (when (or emacs22 emacs23)
+	(require 'coffee-mode)
+	(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+	(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode)))))
+
+;; Emacs 23 specifics go here for now.
 (when emacs23
   (if have-rubyblock
       (progn
 	(require 'ruby-block)
-	(ruby-block-mode t))))
+	(ruby-block-mode t)))
+  
+  ;; Working javascript mode - enable it.
+  (setq auto-mode-alist (cons '("\\.js$" . js-mode) auto-mode-alist))
+  
+  ;; for xml files, use nxml-mode instead of sgml-mode
+  (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
 
 (if have-browse-kill-ring
     (progn
