@@ -194,12 +194,10 @@
 		  (push '(top . top-step) default-frame-alist)))))
 
 
-(when (or emacs21 emacs22 emacs23)
+(when (or emacs21 emacs22 emacs23 emacs24)
     (blink-cursor-mode -1) 
     (tool-bar-mode -1) 
-    (tooltip-mode -1)
-    (tabbar-mode -1)
-    (iswitchb-default-keybindings))
+    (tooltip-mode -1))
 
 (load "comint")
 (fset 'original-comint-exec-1 (symbol-function 'comint-exec-1))
@@ -397,7 +395,7 @@
 	(progn
 	  (message "loading GNU Emacs customizations for Linux")
 	  (load-file "~/.emacs-gnu-linux"))))
-   ((string-match "nt5" system-configuration)
+   ((string-match "nt" system-configuration)
     (if (file-exists-p "~/.emacs-gnu-win")
 	(progn 
 	  (message "loading GNU Emacs customizations for Win NT")
@@ -588,6 +586,10 @@
   
   ;; for xml files, use nxml-mode instead of sgml-mode
   (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
+
+(when (not emacs24)
+  (tabbar-mode -1)
+  (iswitchb-default-keybindings))
 
 (if have-browse-kill-ring
     (progn
