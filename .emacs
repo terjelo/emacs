@@ -46,6 +46,7 @@
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
 (setq emacs23 (eq emacs-major-version 23)) 
+(setq emacs24 (eq emacs-major-version 24)) 
 ;;; General look and feel
 ;;;
 
@@ -76,9 +77,7 @@
 (setq compilation-window-height 10)  ; Make compile window smaller.
 (setq compilation-scroll-output t)   ; Make the compile window auto-scroll
 (require 'iswitchb)                  ;; Easy switching to buffers
-(iswitchb-default-keybindings)
 (menu-bar-mode -1)                   ;; Ditch the menu.
-;(tabbar-mode -1)                     ;; Ditch the tabbar
 (scroll-bar-mode nil)                ;; Ditch the scrollbar.
 (setq default-major-mode 'text-mode) ;; Open unidentified files in text mode
 
@@ -194,11 +193,10 @@
 		  (push '(top . top-step) default-frame-alist)))))
 
 
-(when (or emacs21 emacs22 emacs23)
+(when (or emacs21 emacs22 emacs23 emacs24)
     (blink-cursor-mode -1) 
     (tool-bar-mode -1) 
     (tooltip-mode -1))
-
 
 (when (or emacs21 emacs22)
   (tabbar-mode -1))
@@ -399,7 +397,7 @@
 	(progn
 	  (message "loading GNU Emacs customizations for Linux")
 	  (load-file "~/.emacs-gnu-linux"))))
-   ((string-match "nt5" system-configuration)
+   ((string-match "nt" system-configuration)
     (if (file-exists-p "~/.emacs-gnu-win")
 	(progn 
 	  (message "loading GNU Emacs customizations for Win NT")
@@ -590,6 +588,9 @@
   
   ;; for xml files, use nxml-mode instead of sgml-mode
   (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
+
+(when (not emacs24)
+  (iswitchb-default-keybindings))
 
 (if have-browse-kill-ring
     (progn
