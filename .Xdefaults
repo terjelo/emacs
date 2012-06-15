@@ -4,7 +4,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! emacs, xemacs
 
-emacs*Background: MidnightBlue
+emacs*Background: Black
 emacs*Foreground: White
 emacs*pointerColor: Orchid
 emacs*cursorColor: Yellow
