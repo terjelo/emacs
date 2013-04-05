@@ -42,6 +42,7 @@
 (defvar have-espresso nil "Set to non-nil if you have (and need) espresso mode for javascript")
 (defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
 (defvar have-coffeecript nil "Set to non-nil if you have coffescript mode")
+(defvar have-clojure nil "Set to non-nil if you have clojure mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
@@ -575,6 +576,10 @@
 	(require 'coffee-mode)
 	(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 	(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode)))))
+
+(if have-clojure
+    (progn
+      (require 'clojure-mode)))
 
 ;; Emacs 23 specifics go here for now.
 (when emacs23
