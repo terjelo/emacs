@@ -43,6 +43,7 @@
 (defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
 (defvar have-coffeecript nil "Set to non-nil if you have coffescript mode")
 (defvar have-package nil "Set to non-nil if you have package mode")
+(defvar have-go-mode nil "Set to non-nil if you have go (language) mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
@@ -198,7 +199,7 @@
     (tool-bar-mode -1) 
     (tooltip-mode -1))
 
-(when (or emacs21 emacs22)
+(when (or emacs21 emacs22 emacs24)
   (tabbar-mode -1))
 
 (load "comint")
@@ -618,6 +619,9 @@
       (unless (package-installed-p 'browse-kill-ring)
 	(package-install 'browse-kill-ring)
 	(setq have-browse-kill-ring t))
+      (unless (package-installed-p 'go-mode)
+	(package-install 'go-mode)
+	(setq have-go-mode t))
 ;      (unless (package-installed-p 'paredit)
 ;	(package-refresh-contents)
 ;	(package-install 'paredit))
