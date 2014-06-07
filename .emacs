@@ -42,7 +42,6 @@
 (defvar have-espresso nil "Set to non-nil if you have (and need) espresso mode for javascript")
 (defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
 (defvar have-coffeecript nil "Set to non-nil if you have coffescript mode")
-(defvar have-clojure nil "Set to non-nil if you have clojure mode")
 (defvar have-package nil "Set to non-nil if you have package mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
@@ -411,6 +410,29 @@
    )
   ) ; matched GNU
  )
+;; Emacs version specifics go here for now.
+(when emacs23
+  (if have-rubyblock
+      (progn
+	(require 'ruby-block)
+	(ruby-block-mode t)))
+  
+  ;; Working javascript mode - enable it.
+  (setq auto-mode-alist (cons '("\\.js$" . js-mode) auto-mode-alist))
+  
+  ;; for xml files, use nxml-mode instead of sgml-mode
+  (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
+
+(when (not emacs24)
+  (progn
+    (require 'iswitchb)                  ;; Easy switching to buffers
+    (iswitchb-default-keybindings)))
+
+(when emacs24
+  (progn
+    (setq have-package 't)
+    (icomplete-mode 99)
+    (ido-mode t)))
 
 ;; Load gnus setup.
 (if (file-exists-p "~/.emacs-gnus")
@@ -577,6 +599,8 @@
 	(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 	(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode)))))
 
+; Package mode. This is the future standard, add all packages this way.
+; Over time, move config from emacs-local to here.
 (if have-package
     (progn
       (require 'package)
@@ -584,42 +608,21 @@
       (add-to-list 'package-archives
 		   '("marmalade" . "http://marmalade-repo.org/packages/"))
       (package-initialize)
+      (package-refresh-contents)
 
       ; Clojure stuff
       (unless (package-installed-p 'clojure-mode)
-	(package-refresh-contents)
 	(package-install 'clojure-mode))
       (unless (package-installed-p 'clojure-test-mode)
-	(package-refresh-contents)
 	(package-install 'clojure-test-mode))
+      (unless (package-installed-p 'browse-kill-ring)
+	(package-install 'browse-kill-ring)
+	(setq have-browse-kill-ring t))
 ;      (unless (package-installed-p 'paredit)
 ;	(package-refresh-contents)
 ;	(package-install 'paredit))
 ;      (add-hook 'clojure-mode-hook 'paredit-mode)
       ))
-
-;; Emacs 23 specifics go here for now.
-(when emacs23
-  (if have-rubyblock
-      (progn
-	(require 'ruby-block)
-	(ruby-block-mode t)))
-  
-  ;; Working javascript mode - enable it.
-  (setq auto-mode-alist (cons '("\\.js$" . js-mode) auto-mode-alist))
-  
-  ;; for xml files, use nxml-mode instead of sgml-mode
-  (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
-
-(when (not emacs24)
-  (progn
-    (require 'iswitchb)                  ;; Easy switching to buffers
-    (iswitchb-default-keybindings)))
-
-(when emacs24
-  (progn
-    (icomplete-mode 99)
-    (ido-mode t)))
 
 
 (if have-browse-kill-ring

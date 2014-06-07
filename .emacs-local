@@ -16,8 +16,6 @@
 ;; (setq have-backup-dir t)
 (setq have-markdown t)
 (setq have-rubyblock t)
-(setq have-browse-kill-ring t)
-(setq have-psvn 't)
 (setq have-coffeecript 't)
 (setq have-package 't)
  (when (or emacs21 emacs22)
