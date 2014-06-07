@@ -19,7 +19,7 @@
 (setq have-browse-kill-ring t)
 (setq have-psvn 't)
 (setq have-coffeecript 't)
-(setq have-clojure 't)
+(setq have-package 't)
  (when (or emacs21 emacs22)
     (setq have-javascript 't))
 

@@ -43,6 +43,7 @@
 (defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
 (defvar have-coffeecript nil "Set to non-nil if you have coffescript mode")
 (defvar have-clojure nil "Set to non-nil if you have clojure mode")
+(defvar have-package nil "Set to non-nil if you have package mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
@@ -77,7 +78,6 @@
 (setq next-line-add-newlines nil)    ; Don't add newlines to end of buffer
 (setq compilation-window-height 10)  ; Make compile window smaller.
 (setq compilation-scroll-output t)   ; Make the compile window auto-scroll
-(require 'iswitchb)                  ;; Easy switching to buffers
 (menu-bar-mode -1)                   ;; Ditch the menu.
 (scroll-bar-mode nil)                ;; Ditch the scrollbar.
 (setq default-major-mode 'text-mode) ;; Open unidentified files in text mode
@@ -577,9 +577,26 @@
 	(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 	(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode)))))
 
-(if have-clojure
+(if have-package
     (progn
-      (require 'clojure-mode)))
+      (require 'package)
+      ; Set up some repos and grab packages right away
+      (add-to-list 'package-archives
+		   '("marmalade" . "http://marmalade-repo.org/packages/"))
+      (package-initialize)
+
+      ; Clojure stuff
+      (unless (package-installed-p 'clojure-mode)
+	(package-refresh-contents)
+	(package-install 'clojure-mode))
+      (unless (package-installed-p 'clojure-test-mode)
+	(package-refresh-contents)
+	(package-install 'clojure-test-mode))
+;      (unless (package-installed-p 'paredit)
+;	(package-refresh-contents)
+;	(package-install 'paredit))
+;      (add-hook 'clojure-mode-hook 'paredit-mode)
+      ))
 
 ;; Emacs 23 specifics go here for now.
 (when emacs23
@@ -595,7 +612,15 @@
   (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
 
 (when (not emacs24)
-  (iswitchb-default-keybindings))
+  (progn
+    (require 'iswitchb)                  ;; Easy switching to buffers
+    (iswitchb-default-keybindings)))
+
+(when emacs24
+  (progn
+    (icomplete-mode 99)
+    (ido-mode t)))
+
 
 (if have-browse-kill-ring
     (progn
@@ -606,8 +631,6 @@
 (if have-psvn
     (progn
       (require 'psvn)))
-
-
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
