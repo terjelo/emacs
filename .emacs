@@ -199,7 +199,7 @@
     (tool-bar-mode -1) 
     (tooltip-mode -1))
 
-(when (or emacs21 emacs22 emacs24)
+(when (or emacs21 emacs22)
   (tabbar-mode -1))
 
 (load "comint")
