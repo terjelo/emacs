@@ -158,7 +158,7 @@
 	(width . 82) (height . 200)
 	(cursor-color . "yellow")
 	(foreground-color . "white")
-	(background-color . "darkslateblue")
+	(background-color . "black")
 	))
 
 ;; (add-hook 'text-mode-hook
