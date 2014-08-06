@@ -79,7 +79,7 @@
 (setq compilation-window-height 10)  ; Make compile window smaller.
 (setq compilation-scroll-output t)   ; Make the compile window auto-scroll
 (menu-bar-mode -1)                   ;; Ditch the menu.
-(scroll-bar-mode nil)                ;; Ditch the scrollbar.
+(scroll-bar-mode -1)                 ;; Ditch the scrollbar.
 (setq default-major-mode 'text-mode) ;; Open unidentified files in text mode
 
 
