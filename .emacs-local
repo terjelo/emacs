@@ -5,8 +5,7 @@
 	))
 
 (setq load-path
-      (nconc '( "~/emacs/site-lisp/testsuite")
-      	     '( "~/emacs/site-lisp/autotest.el")
+      (nconc '( "~/emacs/site-lisp/autotest.el")
              '( "~/emacs/site-lisp")
              '( "~/emacs/site-lisp/ri-emacs-0.2.3")
              '( "~/emacs/site-lisp/coffee-mode.el")
@@ -14,11 +13,12 @@
 
 ;; (setq have-python t)
 ;; (setq have-backup-dir t)
-(setq have-markdown t)
-(setq have-rubyblock t)
-(setq have-coffeecript 't)
-(setq have-package 't)
- (when (or emacs21 emacs22)
-    (setq have-javascript 't))
+;(setq have-markdown t)
+;(setq have-rubyblock t)
+;(setq have-coffeecript 't)
+;(setq have-package 't)
+(setq have-psvn 't)
+; (when (or emacs21 emacs22)
+;    (setq have-javascript 't))
 
 ;;(setq have-autotest t)
