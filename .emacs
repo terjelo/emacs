@@ -612,10 +612,11 @@
       (package-refresh-contents)
 
       ; Clojure stuff
-      (unless (package-installed-p 'clojure-mode)
-	(package-install 'clojure-mode))
-      (unless (package-installed-p 'clojure-test-mode)
-	(package-install 'clojure-test-mode))
+      ;; (unless (package-installed-p 'clojure-mode)
+      ;; 	(package-install 'clojure-mode))
+      ;; (unless (package-installed-p 'clojure-test-mode)
+      ;; 	(package-install 'clojure-test-mode))
+      
       (unless (package-installed-p 'browse-kill-ring)
 	(package-install 'browse-kill-ring))
       (unless (package-installed-p 'go-mode)
