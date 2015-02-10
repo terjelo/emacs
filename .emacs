@@ -28,7 +28,6 @@
 (defvar have-camelcase nil "Set to non-nil if you have camelCase")
 (defvar have-auctex nil "Set to non-nil if you have AUCTeX")
 (defvar have-python nil "Set to non-nil if you have Python mode")
-(defvar have-tramp nil "Set to non-nil if you have Tramp")
 (defvar have-testsuite nil "Set to non-nil if you have Testsuite")
 (defvar have-docbookide nil "Set to non-nil if you have Docbook IDE")
 (defvar have-psgml nil "Set to non-nil if you have PSGML")
@@ -517,12 +516,6 @@
 		  interpreter-mode-alist))
       (autoload 'python-mode "python-mode" "Python editing mode." t)))
       
-;; Tramp - edit remote files / dirs.
-(if have-tramp
-    (progn
-      (require 'tramp)
-      (setq tramp-default-method "sm")))
-
 ;; Testsuite - fastlib stuff for automatic generation and running of tests.
 (if have-testsuite
     (progn
@@ -644,6 +637,8 @@
     (progn
       (require 'psvn)))
 
+(setq tramp-default-method "ssh")
+
 (custom-set-variables
   ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
   ;; Your init file should contain only one such instance.
@@ -658,4 +653,3 @@
 (desktop-read)
 
 (global-set-key [\C-c\C-c] 'comment-region)
-
