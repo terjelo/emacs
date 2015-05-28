@@ -586,13 +586,6 @@
       (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
       (autoload 'javascript-mode "javascript" nil t)))
 
-(if have-coffeecript
-    (progn
-      (when (or emacs22 emacs23)
-	(require 'coffee-mode)
-	(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-	(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode)))))
-
 ; Package mode. This is the future standard, add all packages this way.
 ; Over time, move config from emacs-local to here.
 (if have-package
@@ -614,6 +607,8 @@
 	(package-install 'browse-kill-ring))
       (unless (package-installed-p 'go-mode)
 	(package-install 'go-mode))
+      (unless (package-installed-p 'coffee-mode)
+	(package-install 'coffee-mode))
       ; For some reason, the psvn mode in Marmalade is garbage.
 ;      (unless (package-installed-p 'psvn)
 ;	(package-install 'psvn))
@@ -621,12 +616,20 @@
       ; (setq have-psvn t)
       (setq have-go-mode t)
       (setq have-browse-kill-ring t)
+      (setq have-coffeecript t)
 ;      (unless (package-installed-p 'paredit)
 ;	(package-refresh-contents)
 ;	(package-install 'paredit))
 ;      (add-hook 'clojure-mode-hook 'paredit-mode)
       ))
 
+
+(if have-coffeecript
+    (progn
+      (when (or emacs22 emacs23)
+	(require 'coffee-mode)
+	(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+	(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode)))))
 
 (if have-browse-kill-ring
     (progn
