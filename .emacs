@@ -594,8 +594,11 @@
       ; Set up some repos and grab packages right away
       (add-to-list 'package-archives
 		   '("marmalade" . "http://marmalade-repo.org/packages/"))
+      (add-to-list 'package-archives
+		   '("melpa" . "http://melpa.milkbox.net/packages/") t)
       (package-initialize)
       (package-refresh-contents)
+      (setq package-archive-enable-alist '(("melpa" deft magit)))
 
       ; Clojure stuff
       ;; (unless (package-installed-p 'clojure-mode)
@@ -612,8 +615,11 @@
       ; For some reason, the psvn mode in Marmalade is garbage.
 ;      (unless (package-installed-p 'psvn)
 ;	(package-install 'psvn))
-
-      ; (setq have-psvn t)
+;      (setq have-psvn t)
+      (when emacs24
+	(unless (package-installed-p 'restclient)
+	  (package-install 'restclient)))
+      
       (setq have-go-mode t)
       (setq have-browse-kill-ring t)
       (setq have-coffeecript t)
