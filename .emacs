@@ -67,7 +67,12 @@
 (set-background-color "Black")
 (set-foreground-color "white")
 
-(setq visible-bell t)
+;(setq visible-bell t) ; Bugs on OSX for now.
+(setq visible-bell nil)
+(setq ring-bell-function (lambda ()
+			   (invert-face 'mode-line)
+			   (run-with-timer 0.1 nil 'invert-face 'mode-line)))
+
 (setq transient-mark-mode t)
 (setq scroll-step 1)                 ; Scroll a line at a time
 (show-paren-mode t)                  ; Show matching parenthesis
