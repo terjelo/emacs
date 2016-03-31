@@ -11,8 +11,6 @@
 (defvar have-filladapt nil "Set to non-nil if you have Filladapt")
 (defvar have-folding nil "Set to non-nil if you have Folding")
 (defvar have-gnuserv nil "Set to non-nil if you have gnuserv")
-(defvar have-html-helper-mode nil "Set to non-nil if you have HTML-Helper-Mode")
-(defvar have-htmlize nil "Set to non-nil if you have HTMLize")
 (defvar have-ishl nil "Set to non-nil if you have Ishl")
 (defvar have-jde nil "Set to non-nil if you have jde")
 (defvar have-msdos-shell-fix nil "Set to non-nil if you have msdos-shell-fix")
@@ -617,6 +615,8 @@
 	(package-install 'go-mode))
       (unless (package-installed-p 'coffee-mode)
 	(package-install 'coffee-mode))
+      (unless (package-installed-p 'web-mode)
+	(package-install 'web-mode))
       ; For some reason, the psvn mode in Marmalade is garbage.
 ;      (unless (package-installed-p 'psvn)
 ;	(package-install 'psvn))
@@ -634,6 +634,17 @@
 ;      (add-hook 'clojure-mode-hook 'paredit-mode)
       ))
 
+(if (package-installed-p 'web-mode)
+    (progn
+      (require 'web-mode)
+      (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))      
+      (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))))
 
 (if have-coffeecript
     (progn
