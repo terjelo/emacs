@@ -39,7 +39,6 @@
 (defvar have-espresso nil "Set to non-nil if you have (and need) espresso mode for javascript")
 (defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
 (defvar have-coffeecript nil "Set to non-nil if you have coffescript mode")
-(defvar have-package nil "Set to non-nil if you have package mode")
 (defvar have-go-mode nil "Set to non-nil if you have go (language) mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
@@ -433,7 +432,6 @@
 
 (when emacs24
   (progn
-    (setq have-package 't)
     (icomplete-mode 99)
     (ido-mode t)))
 
@@ -589,11 +587,18 @@
       (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
       (autoload 'javascript-mode "javascript" nil t)))
 
+; package.el is pre-provided in emacs 24
+(if (and (or emacs22 emacs23 emacs21))
+    (progn
+      ;; Todo - load local package.el.
+      (require 'package)))
+      
+
 ; Package mode. This is the future standard, add all packages this way.
 ; Over time, move config from emacs-local to here.
-(if have-package
+(if emacs24
     (progn
-      (require 'package)
+      (require 'package)      
       ; Set up some repos and grab packages right away
       (add-to-list 'package-archives
 		   '("marmalade" . "http://marmalade-repo.org/packages/"))

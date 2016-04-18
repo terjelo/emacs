@@ -14,7 +14,6 @@
 ;; (setq have-backup-dir t)
 ;(setq have-markdown t)
 ;(setq have-rubyblock t)
-;(setq have-package 't)
 (setq have-psvn 't)
 ; (when (or emacs21 emacs22)
 ;    (setq have-javascript 't))
