@@ -1,3 +1,9 @@
+(setq-default inhibit-startup-message t)
+;; Turn off mouse interface early in startup to avoid momentary display
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
 (require 'cl)
 
 ;; (setq debug-on-error t)
@@ -40,6 +46,7 @@
 (defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
 (defvar have-coffeecript nil "Set to non-nil if you have coffescript mode")
 (defvar have-go-mode nil "Set to non-nil if you have go (language) mode")
+(defvar have-diminish nil "Set to non-nil if you have diminish) mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
@@ -50,7 +57,6 @@
 
 (setq load-path (cons "~/elisp" load-path))
 (setq frame-title-format "Emacs - %f")
-(setq-default inhibit-startup-message t)
 (setq user-full-name "Terje Loken")
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -79,14 +85,56 @@
 (setq next-line-add-newlines nil)    ; Don't add newlines to end of buffer
 (setq compilation-window-height 10)  ; Make compile window smaller.
 (setq compilation-scroll-output t)   ; Make the compile window auto-scroll
-(menu-bar-mode -1)                   ;; Ditch the menu.
-(scroll-bar-mode -1)                 ;; Ditch the scrollbar.
 (setq default-major-mode 'text-mode) ;; Open unidentified files in text mode
 
 
 (auto-compression-mode 1)            ;; Load and edit compressed files.
 ;(require 'dircolors)                 ;; Colorize intermediates, e.g. C-c C-f
 (require 'generic-x)                 ;; Editing mode for X resource files.
+
+; Utility functions
+(defun delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (ido-kill-buffer)
+      (when (yes-or-no-p "Are you sure you want to remove this file? ")
+        (delete-file filename)
+        (kill-buffer buffer)
+        (message "File '%s' successfully removed" filename)))))
+
+(defun rename-current-buffer-file ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (let ((new-name (read-file-name "New name: " filename)))
+        (if (get-buffer new-name)
+            (error "A buffer named '%s' already exists!" new-name)
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil)
+          (message "File '%s' successfully renamed to '%s'"
+                   name (file-name-nondirectory new-name)))))))
+
+(defun open-line-below ()
+  (interactive)
+  (end-of-line)
+  (newline)
+  (indent-for-tab-command))
+
+(defun open-line-above ()
+  (interactive)
+  (beginning-of-line)
+  (newline)
+  (forward-line -1)
+  (indent-for-tab-command))
 
 ;; Set up the global keys.
 (global-set-key [C-right] 'forward-sexp)
@@ -122,6 +170,11 @@
 ;(global-set-key [(control =)] 'joc-bounce-sexp) ; Bounce between parens
 (global-set-key [(control =)] 'align-equals) ; Align selection on equal sign.
 (global-set-key [\C-tab] 'align) ; Align selection.
+(global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
+(global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
+(global-set-key (kbd "<C-return>") 'open-line-below)
+(global-set-key (kbd "<C-S-return>") 'open-line-above)
+
 
 (custom-set-variables '(aquamacs-styles-mode t))
 
@@ -197,7 +250,6 @@
 
 (when (or emacs21 emacs22 emacs23 emacs24)
     (blink-cursor-mode -1) 
-    (tool-bar-mode -1) 
     (tooltip-mode -1))
 
 (when (or emacs21 emacs22)
@@ -320,6 +372,8 @@
 (set-face-background 'font-lock-fixme-face "Yellow")
 (font-lock-add-keywords 'c++-mode
 			'(("\\(XXX.*\\|TODO.*\\|\@todo.*\\)" 1 font-lock-fixme-face prepend)))
+(font-lock-add-keywords 'python-mode
+			'(("\\(XXX.*\\|TODO.*\\|\@todo.*\\)" 1 font-lock-fixme-face prepend)))
 
 ;;; align equal signs in marked block
 (defun align-equals (start end)
@@ -435,6 +489,13 @@
     (icomplete-mode 99)
     (ido-mode t)))
 
+; package.el is pre-provided in emacs 24
+(if (and (or emacs22 emacs23 emacs21))
+    (progn
+      ;; Todo - load local package.el.
+      (require 'package)))
+      
+
 ;; Load gnus setup.
 (if (file-exists-p "~/.emacs-gnus")
     (progn
@@ -468,6 +529,11 @@
       (color-theme-initialize)
       (color-theme-charcoal-black)))
 
+(if have-diminish
+    (progn
+      (require 'diminish)
+      (diminish 'wrap-region-mode)
+      (diminish 'yas/minor-mode)))
 
 ; camelCase for thoseAnnoyingMixedCaseWords
 (if have-camelcase
@@ -477,20 +543,12 @@
 ;(add-hook 'c-mode-common-hook '(lambda () (camelCase-mode 1)))
 
 ;; Put backup files in a separate folder, avoiding pollution.
-(if have-backup-dir
-    (progn
-      (require 'backup-dir)
-      (setq bkup-backup-directory-info
-	    '(("/h/lte/.*" "~/.backups/" ok-create prepend-name)
-;; 	      ("^/[^/:]+:"     ".backups/") ; handle EFS files specially: don't
-;; 	      ("^/[^/:]+:"     "./")        ; search-upward... its very slow
-	      (t               "~/.backups/" ok-create prepend-name)))))
-
-;; Save backup files to temp dir.
 (setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+      `(("." . ,(expand-file-name
+                 (concat user-emacs-directory "backups")))))
+
+;; Make backups of files, even when they're in version control
+(setq vc-make-backup-files t)
 
 ;; TeX stuff.
 ;;
@@ -587,12 +645,6 @@
       (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
       (autoload 'javascript-mode "javascript" nil t)))
 
-; package.el is pre-provided in emacs 24
-(if (and (or emacs22 emacs23 emacs21))
-    (progn
-      ;; Todo - load local package.el.
-      (require 'package)))
-      
 
 ; Package mode. This is the future standard, add all packages this way.
 ; Over time, move config from emacs-local to here.
@@ -622,6 +674,8 @@
 	(package-install 'coffee-mode))
       (unless (package-installed-p 'web-mode)
 	(package-install 'web-mode))
+      (unless (package-installed-p 'diminish)
+	(package-install 'diminish))
       ; For some reason, the psvn mode in Marmalade is garbage.
 ;      (unless (package-installed-p 'psvn)
 ;	(package-install 'psvn))
@@ -633,6 +687,7 @@
       (setq have-go-mode t)
       (setq have-browse-kill-ring t)
       (setq have-coffeecript t)
+      (setq have-diminish t)
 ;      (unless (package-installed-p 'paredit)
 ;	(package-refresh-contents)
 ;	(package-install 'paredit))
