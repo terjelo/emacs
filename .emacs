@@ -46,7 +46,6 @@
 (defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
 (defvar have-coffeecript nil "Set to non-nil if you have coffescript mode")
 (defvar have-go-mode nil "Set to non-nil if you have go (language) mode")
-(defvar have-diminish nil "Set to non-nil if you have diminish) mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
 (setq emacs22 (eq emacs-major-version 22)) 
@@ -174,7 +173,6 @@
 (global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
 (global-set-key (kbd "<C-return>") 'open-line-below)
 (global-set-key (kbd "<C-S-return>") 'open-line-above)
-
 
 (custom-set-variables '(aquamacs-styles-mode t))
 
@@ -529,12 +527,6 @@
       (color-theme-initialize)
       (color-theme-charcoal-black)))
 
-(if have-diminish
-    (progn
-      (require 'diminish)
-      (diminish 'wrap-region-mode)
-      (diminish 'yas/minor-mode)))
-
 ; camelCase for thoseAnnoyingMixedCaseWords
 (if have-camelcase
     (progn
@@ -655,7 +647,7 @@
       (add-to-list 'package-archives
 		   '("marmalade" . "http://marmalade-repo.org/packages/"))
       (add-to-list 'package-archives
-		   '("melpa" . "http://melpa.milkbox.net/packages/") t)
+		   '("melpa" . "http://melpa.org/packages/") t)
       (package-initialize)
       (package-refresh-contents)
       (setq package-archive-enable-alist '(("melpa" deft magit)))
@@ -676,6 +668,8 @@
 	(package-install 'web-mode))
       (unless (package-installed-p 'diminish)
 	(package-install 'diminish))
+      (unless (package-installed-p 'magit)
+	(package-install 'magit))
       ; For some reason, the psvn mode in Marmalade is garbage.
 ;      (unless (package-installed-p 'psvn)
 ;	(package-install 'psvn))
@@ -687,12 +681,55 @@
       (setq have-go-mode t)
       (setq have-browse-kill-ring t)
       (setq have-coffeecript t)
-      (setq have-diminish t)
+      
 ;      (unless (package-installed-p 'paredit)
 ;	(package-refresh-contents)
 ;	(package-install 'paredit))
 ;      (add-hook 'clojure-mode-hook 'paredit-mode)
       ))
+
+(if (package-installed-p 'diminish)
+    (progn
+      (require 'diminish)
+      (diminish 'wrap-region-mode)
+      (diminish 'yas/minor-mode)))
+
+(if (package-installed-p 'magit)
+    (progn
+      (require 'magit)
+      (global-set-key (kbd "C-x v") 'magit-status)
+      
+      (defun magit-toggle-whitespace ()
+	(interactive)
+	(if (member "-w" magit-diff-options)
+	    (magit-dont-ignore-whitespace)
+	  (magit-ignore-whitespace)))
+
+      (defun magit-ignore-whitespace ()
+	(interactive)
+	(add-to-list 'magit-diff-options "-w")
+	(magit-refresh))
+      
+      (defun magit-dont-ignore-whitespace ()
+	(interactive)
+	(setq magit-diff-options (remove "-w" magit-diff-options))
+	(magit-refresh))
+
+      (define-key magit-status-mode-map (kbd "W") 'magit-toggle-whitespace)
+
+      ;; full screen magit-status
+      (defadvice magit-status (around magit-fullscreen activate)
+	(window-configuration-to-register :magit-fullscreen)
+	ad-do-it
+	(delete-other-windows))
+      
+      (defun magit-quit-session ()
+	"Restores the previous window configuration and kills the magit buffer"
+	(interactive)
+	(kill-buffer)
+	(jump-to-register :magit-fullscreen))
+      
+      (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)))
 
 (if (package-installed-p 'web-mode)
     (progn
