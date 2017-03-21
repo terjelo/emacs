@@ -75,6 +75,8 @@
 			   (invert-face 'mode-line)
 			   (run-with-timer 0.1 nil 'invert-face 'mode-line)))
 
+(setq mac-command-modifier 'meta)    ; Use command, not option on mac.
+(setq mac-option-modifier 'nil)    ; Use command, not option on mac.
 (setq transient-mark-mode t)
 (setq scroll-step 1)                 ; Scroll a line at a time
 (show-paren-mode t)                  ; Show matching parenthesis
