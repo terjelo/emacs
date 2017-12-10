@@ -51,6 +51,7 @@
 (setq emacs22 (eq emacs-major-version 22)) 
 (setq emacs23 (eq emacs-major-version 23)) 
 (setq emacs24 (eq emacs-major-version 24)) 
+(setq emacs25 (eq emacs-major-version 25)) 
 ;;; General look and feel
 ;;;
 
@@ -176,7 +177,8 @@
 (global-set-key (kbd "<C-return>") 'open-line-below)
 (global-set-key (kbd "<C-S-return>") 'open-line-above)
 
-(custom-set-variables '(aquamacs-styles-mode t))
+(setq custom-file "~/emacs/custom.el")
+(load custom-file :noerror)
 
 ;;;---------------------------------------------------------------------
 
@@ -196,6 +198,10 @@
 ; 		(nth 1 (current-input-mode))
 ;		0 )
 (setq standard-indent 2)
+
+(setq aquamacs-styles-mode t)
+(setq font-lock-support-mode nil)
+(setq py-indent-offset 2)
 
 ; (standard-display-european t)
 
@@ -479,7 +485,7 @@
   ;; for xml files, use nxml-mode instead of sgml-mode
   (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
 
-(when (not emacs24)
+(when (not (or emacs24 emacs25))
   (progn
     (require 'iswitchb)                  ;; Easy switching to buffers
     (iswitchb-default-keybindings)))
@@ -642,7 +648,7 @@
 
 ; Package mode. This is the future standard, add all packages this way.
 ; Over time, move config from emacs-local to here.
-(if emacs24
+(if (or emacs24 emacs25)
     (progn
       (require 'package)      
       ; Set up some repos and grab packages right away
@@ -764,11 +770,7 @@
 
 (setq tramp-default-method "ssh")
 
-(custom-set-variables
-  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
-  ;; Your init file should contain only one such instance.
- '(font-lock-support-mode nil)
- '(py-indent-offset 2))
+
 
 ; Start with the same buffers, major modes and buffer positions:
 ; You must do a M-x desktop-save the first time it's used. Emacs
@@ -778,3 +780,9 @@
 (desktop-read)
 
 (global-set-key [\C-c\C-c] 'comment-region)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
