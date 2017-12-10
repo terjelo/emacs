@@ -254,7 +254,7 @@
 		  (push '(top . top-step) default-frame-alist)))))
 
 
-(when (or emacs21 emacs22 emacs23 emacs24)
+(when (or emacs21 emacs22 emacs23 emacs24 emacs25)
     (blink-cursor-mode -1) 
     (tooltip-mode -1))
 
@@ -490,7 +490,7 @@
     (require 'iswitchb)                  ;; Easy switching to buffers
     (iswitchb-default-keybindings)))
 
-(when emacs24
+(when (or emacs24 emacs25)
   (progn
     (icomplete-mode 99)
     (ido-mode t)))
@@ -682,7 +682,7 @@
 ;      (unless (package-installed-p 'psvn)
 ;	(package-install 'psvn))
 ;      (setq have-psvn t)
-      (when emacs24
+      (when (or emacs24 emacs25)
 	(unless (package-installed-p 'restclient)
 	  (package-install 'restclient)))
       
