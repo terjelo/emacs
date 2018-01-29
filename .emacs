@@ -678,6 +678,8 @@
 	(package-install 'diminish))
       (unless (package-installed-p 'magit)
 	(package-install 'magit))
+      (unless (package-installed-p 'terraform-mode)
+	(package-install 'terraform-mode))
       ; For some reason, the psvn mode in Marmalade is garbage.
 ;      (unless (package-installed-p 'psvn)
 ;	(package-install 'psvn))
