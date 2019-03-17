@@ -52,6 +52,7 @@
 (setq emacs23 (eq emacs-major-version 23)) 
 (setq emacs24 (eq emacs-major-version 24)) 
 (setq emacs25 (eq emacs-major-version 25)) 
+(setq emacs26 (eq emacs-major-version 26)) 
 ;;; General look and feel
 ;;;
 
@@ -254,7 +255,7 @@
 		  (push '(top . top-step) default-frame-alist)))))
 
 
-(when (or emacs21 emacs22 emacs23 emacs24 emacs25)
+(when (or emacs21 emacs22 emacs23 emacs24 emacs25 emacs26)
     (blink-cursor-mode -1) 
     (tooltip-mode -1))
 
@@ -485,12 +486,12 @@
   ;; for xml files, use nxml-mode instead of sgml-mode
   (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
 
-(when (not (or emacs24 emacs25))
+(when (not (or emacs24 emacs25 emacs26))
   (progn
     (require 'iswitchb)                  ;; Easy switching to buffers
     (iswitchb-default-keybindings)))
 
-(when (or emacs24 emacs25)
+(when (or emacs24 emacs25 emacs26)
   (progn
     (icomplete-mode 99)
     (ido-mode t)))
@@ -648,7 +649,7 @@
 
 ; Package mode. This is the future standard, add all packages this way.
 ; Over time, move config from emacs-local to here.
-(if (or emacs24 emacs25)
+(if (or emacs24 emacs25 emacs26)
     (progn
       (require 'package)      
       ; Set up some repos and grab packages right away
@@ -686,7 +687,7 @@
 ;      (unless (package-installed-p 'psvn)
 ;	(package-install 'psvn))
 ;      (setq have-psvn t)
-      (when (or emacs24 emacs25)
+      (when (or emacs24 emacs25 emacs26)
 	(unless (package-installed-p 'restclient)
 	  (package-install 'restclient)))
       
