@@ -4,8 +4,6 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
-(require 'cl)
-
 ;; (setq debug-on-error t)
 
 ;;;------------------------------------------------------------------------
@@ -44,7 +42,7 @@
 (defvar have-psvn nil "Set to non-nil if you have psvn")
 (defvar have-espresso nil "Set to non-nil if you have (and need) espresso mode for javascript")
 (defvar have-javascript nil "Set to non-nil if you have (and need) javascript mode for javascript")
-(defvar have-coffeecript nil "Set to non-nil if you have coffescript mode")
+(defvar have-coffeescript nil "Set to non-nil if you have coffescript mode")
 (defvar have-go-mode nil "Set to non-nil if you have go (language) mode")
 
 (setq emacs21 (eq emacs-major-version 21)) 
@@ -53,6 +51,7 @@
 (setq emacs24 (eq emacs-major-version 24)) 
 (setq emacs25 (eq emacs-major-version 25)) 
 (setq emacs26 (eq emacs-major-version 26)) 
+(setq emacs27 (eq emacs-major-version 27)) 
 ;;; General look and feel
 ;;;
 
@@ -94,6 +93,9 @@
 (auto-compression-mode 1)            ;; Load and edit compressed files.
 ;(require 'dircolors)                 ;; Colorize intermediates, e.g. C-c C-f
 (require 'generic-x)                 ;; Editing mode for X resource files.
+
+(when (or emacs21 emacs22 emacs23 emacs24 emacs25)
+  (require 'cl))
 
 ; Utility functions
 (defun delete-current-buffer-file ()
@@ -486,12 +488,12 @@
   ;; for xml files, use nxml-mode instead of sgml-mode
   (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
 
-(when (not (or emacs24 emacs25 emacs26))
+(when (not (or emacs24 emacs25 emacs26 emacs27))
   (progn
     (require 'iswitchb)                  ;; Easy switching to buffers
     (iswitchb-default-keybindings)))
 
-(when (or emacs24 emacs25 emacs26)
+(when (or emacs24 emacs25 emacs26 emacs27)
   (progn
     (icomplete-mode 99)
     (ido-mode t)))
@@ -649,12 +651,12 @@
 
 ; Package mode. This is the future standard, add all packages this way.
 ; Over time, move config from emacs-local to here.
-(if (or emacs24 emacs25 emacs26)
+(if (or emacs24 emacs25 emacs26 emacs27)
     (progn
       (require 'package)      
       ; Set up some repos and grab packages right away
-      (add-to-list 'package-archives
-		   '("marmalade" . "http://marmalade-repo.org/packages/"))
+      ;(add-to-list 'package-archives
+      ;		   '("marmalade" . "http://marmalade-repo.org/packages/"))
       (add-to-list 'package-archives
 		   '("melpa" . "http://melpa.org/packages/") t)
       (package-initialize)
@@ -683,17 +685,25 @@
 	(package-install 'terraform-mode))
       (unless (package-installed-p 'yaml-mode)
 	(package-install 'yaml-mode))
+      (unless (package-installed-p 'markdown-mode)
+	(package-install 'markdown-mode))
+
+      ; Just for fun.
+      (unless (package-installed-p 'fireplace)
+	(package-install 'fireplace))
+      
       ; For some reason, the psvn mode in Marmalade is garbage.
 ;      (unless (package-installed-p 'psvn)
 ;	(package-install 'psvn))
 ;      (setq have-psvn t)
-      (when (or emacs24 emacs25 emacs26)
+      (when (or emacs24 emacs25 emacs26 emacs27)
 	(unless (package-installed-p 'restclient)
 	  (package-install 'restclient)))
       
       (setq have-go-mode t)
       (setq have-browse-kill-ring t)
-      (setq have-coffeecript t)
+      (setq have-coffeescript t)
+      (setq have-markdown t)
       
 ;      (unless (package-installed-p 'paredit)
 ;	(package-refresh-contents)
@@ -756,7 +766,7 @@
       (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))      
       (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))))
 
-(if have-coffeecript
+(if have-coffeescript
     (progn
       (when (or emacs22 emacs23)
 	(require 'coffee-mode)
@@ -781,8 +791,11 @@
 ; You must do a M-x desktop-save the first time it's used. Emacs
 ; must be started in the same current directory.
 (load "desktop")
-(desktop-load-default)
+(desktop-save-mode 1)
+(setq history-length 250)
+(add-to-list 'desktop-globals-to-save 'file-name-history)
 (desktop-read)
+(setq desktop-enable t)
 
 (global-set-key [\C-c\C-c] 'comment-region)
 (custom-set-faces
