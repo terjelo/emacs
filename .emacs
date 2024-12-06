@@ -52,6 +52,8 @@
 (setq emacs25 (eq emacs-major-version 25)) 
 (setq emacs26 (eq emacs-major-version 26)) 
 (setq emacs27 (eq emacs-major-version 27)) 
+(setq emacs28 (eq emacs-major-version 28)) 
+(setq emacs29 (eq emacs-major-version 29)) 
 ;;; General look and feel
 ;;;
 
@@ -488,7 +490,7 @@
   ;; for xml files, use nxml-mode instead of sgml-mode
   (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode)))
 
-(when (not (or emacs24 emacs25 emacs26 emacs27))
+(when (not (or emacs24 emacs25 emacs26 emacs27 emacs28 emacs29))
   (progn
     (require 'iswitchb)                  ;; Easy switching to buffers
     (iswitchb-default-keybindings)))
@@ -651,7 +653,7 @@
 
 ; Package mode. This is the future standard, add all packages this way.
 ; Over time, move config from emacs-local to here.
-(if (or emacs24 emacs25 emacs26 emacs27)
+(if (or emacs24 emacs25 emacs26 emacs27 emacs28 emacs29)
     (progn
       (require 'package)      
       ; Set up some repos and grab packages right away
